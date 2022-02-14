@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://unpkg.com/vue@3"></script>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+    <title>Néphélim VUE.JS Test</title>
+
+</head>
+<body>
+<!-- Vue Model  -------------------------------------------------- -->
+<!-- Vue Model  -------------------------------------------------- -->
+    <div id="app">
+        <h1>Neph t'as Vue ? J'y Hess maggle</h1>
+       <!--  <input type="text" placeholder="{{ message }}" v-model="message" />
+       <a href="#" @click="addTask" v-if=" message != '' ">Ajouter Tache</a> {{ message }} -->
+        
+        <!-- <p v-bind:title="message" v-for="tasklist in task" @click="inverser">
+            {{ tasklist }}
+        </p> -->
+        <adder @addTask="newTask"></adder>
+        <note v-for="tasklist in task" v-bind:content="tasklist"></note>
+    </div>
+
+<!-- Vue Model  -------------------------------------------------- -->
+<!-- Vue Model  -------------------------------------------------- -->
+    
+
+    <!-- Vue Script Start -->
+    <script>
+      const vueTableTest = Vue.createApp({
+        data() {
+          return {
+            feedBack: 'Hello Neph i\'m Vue!',
+            task: ["Sauver le monde", "Avoir un plan", "Apprendre Vue", "EyhNephT"],
+          }
+        },
+        methods:{
+            inverser(){
+                this.task.reverse();
+            },
+            addTask(feedBack){
+                this.task.push(feedBack);
+            }
+        }
+      });
+      // NOTE =============================================================== //
+      vueTableTest.component('note', {
+          props: ['content'],
+          template: `<p> {{ content }} </p>`
+      });
+      // NOTE END =========================================================== //
+
+      // ADDER ============================================================== //
+      vueTableTest.component('adder', {
+        props: [],
+        emits: ['newTask','addTask'],
+        data() {
+            return{
+                feedBack: 'New message'
+            }
+        },
+        methods:{
+            saveTask(feedBack){
+                this.$emit('newTask', this.feedBack);
+                this.feedBack = '';
+            }
+        },
+        template: `
+            <input type="text" v-model="feedBack" />
+            <a href="#" @click="saveTask" v-if=" feedBack != '' ">Ajouter Tache</a> {{ feedBack }} 
+        ` //PARSE END
+        })
+        // ADDER END ========================================================= //
+
+
+      vueTableTest.mount('#app');
+    </script>
+    <!-- Vue Script Start -->
+</body>
+</html>
